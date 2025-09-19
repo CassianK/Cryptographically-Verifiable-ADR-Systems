@@ -8,7 +8,7 @@
 html[data-theme="light"]{
   --bg:#f6f7fb; --panel:#ffffff; --ink:#0b1220; --muted:#64748b;
   --brand:#2563eb; --brand-2:#7c3aed; --card:#ffffff;
-  --stroke:#e8edf4; --ring:#dbeafe; --good:#16a34a;
+  --stroke:#e8edf4; --ring:#dbeafe; --good:#16a34a; --warn:#b45309; --danger:#b91c1c;
 }
 
 /* ===== Base ===== */
@@ -47,6 +47,12 @@ textarea,select,input[type=file]{width:100%;border:1px solid var(--stroke);borde
 textarea::placeholder{color:var(--muted)}
 .elist{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:rgba(0,0,0,.15);
        border:1px dashed var(--stroke);border-radius:12px;padding:10px;min-height:48px}
+.elist button.file {
+  width:100%; text-align:left; border:1px solid var(--stroke);
+  background:transparent; color:var(--ink); padding:8px 10px; border-radius:10px;
+  margin:6px 0; font-family:ui-monospace,Menlo,monospace; cursor:pointer;
+}
+.elist button.file:hover { border-color: var(--ring); }
 .meta{color:var(--muted);font-size:13px}
 
 .right h2{margin:0 0 12px}
