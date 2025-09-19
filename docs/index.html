@@ -43,7 +43,13 @@
       <textarea id="case-notes" rows="4" spellcheck="false"></textarea>
       <div class="meta" id="preset-meta">—</div>
     </div>
-
+      <!-- SLA helper block -->
+      <div class="card fade">
+        <label class="lbl">SLA helper (CSV)</label>
+        <div class="meta">CSV columns: <code>timestamp,up</code> (up=1/0).</div>
+        <input id="sla-input" type="file" accept=".csv" />
+        <div class="meta" id="sla-result">No CSV loaded.</div>
+      </div>
     <button id="btn-open" class="cta">1) Open Case</button>
 
     <div class="card fade">
