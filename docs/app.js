@@ -12,6 +12,7 @@ const btnAbout=$('btn-about'), about=$('about'), backdrop=$('about-backdrop');
 const qr=$('qr'), qrBox=$('qr-box'), qrBackdrop=$('qr-backdrop');
 const caseSelect=$('case-select'), caseNotes=$('case-notes'), fileInput=$('file-input'), eList=$('e-list'), presetMeta=$('preset-meta');
 const slaInput=$('sla-input'), slaResult=$('sla-result');
+const btnPdf=$('btn-pdf'); // ← PDF 버튼
 
 // ---------- state ----------
 let state = {
@@ -37,6 +38,12 @@ function rnd(bytes=32){ const a=new Uint8Array(bytes); crypto.getRandomValues(a)
 function push(msg){ const line=`[${now()}] ${msg}`; logEl.textContent+=line+'\n'; logEl.scrollTop=logEl.scrollHeight; state.audit.push(line); }
 function toast(msg){ toastEl.textContent=msg; toastEl.classList.add('show'); setTimeout(()=>toastEl.classList.remove('show'),1600); }
 function setBadge(text,ok=false){ badge.textContent=text; badge.style.color=ok?'var(--good)':'var(--muted)'; }
+function short(hex, head=10, tail=8){
+  if(!hex || typeof hex !== 'string') return String(hex);
+  if(hex.length <= head+tail+3) return hex;
+  return hex.slice(0, head) + '…' + hex.slice(-tail);
+}
+function fmtDate(d=new Date()){ return d.toISOString().replace('T',' ').replace(/\..+/, ' UTC'); }
 function reset(){
   state={caseId:0,files:[],merkle:null,decisionHash:null,anchorTx:null,execTx:null,signatures:[],audit:[]};
   logEl.textContent=''; caseIdEl.textContent='–'; dhEl.textContent='–'; txAEl.textContent='–'; txEEl.textContent='–';
@@ -122,11 +129,107 @@ caseSelect?.addEventListener('change',(e)=>applyPreset(e.target.value));
 // ---------- About & QR ----------
 function openAbout(){ backdrop.hidden=false; about.showModal(); }
 function closeAbout(){ about.close(); backdrop.hidden=true; }
-btnAbout.onclick=openAbout; backdrop.onclick=closeAbout; about.addEventListener('close',()=>{ backdrop.hidden=true; });
+btnAbout?.addEventListener('click', openAbout);
+backdrop?.addEventListener('click', closeAbout);
+about?.addEventListener('close',()=>{ backdrop.hidden=true; });
 
 function openQR(){ qrBackdrop.hidden=false; qr.showModal(); }
 function closeQR(){ qr.close(); qrBackdrop.hidden=true; qrBox.innerHTML=''; }
-qrBackdrop?.addEventListener('click', closeQR); qr?.addEventListener('close', ()=>{ qrBackdrop.hidden=true; qrBox.innerHTML=''; });
+qrBackdrop?.addEventListener('click', closeQR);
+qr?.addEventListener('close', ()=>{ qrBackdrop.hidden=true; qrBox.innerHTML=''; });
+
+// ---------- Award PDF ----------
+async function generateAwardPDF(){
+  if(!state.decisionHash){
+    push('(!) Generate proof first to include a decision hash in the PDF.');
+    toast('Generate proof first');
+    return;
+  }
+
+  const preset = PRESETS[caseSelect.value] || {};
+  const evidenceRows = state.files.length
+    ? state.files.map((f,i)=>`<tr>
+          <td>${i+1}</td>
+          <td>${f.name}</td>
+          <td style="text-align:right">${f.size.toLocaleString()} B</td>
+          <td>${short(f.hash)}</td>
+        </tr>`).join('')
+    : `<tr><td colspan="4" style="text-align:center;color:#777">No files were uploaded.</td></tr>`;
+
+  const signRows = state.signatures.length
+    ? state.signatures.map((s,i)=>`<tr><td>${i+1}</td><td>${s.signer}</td><td>${short(s.sig)}</td></tr>`).join('')
+    : `<tr><td colspan="3" style="text-align:center;color:#777">No signatures (demo not completed)</td></tr>`;
+
+  const node = document.createElement('div');
+  node.style.padding = '16px';
+  node.innerHTML = `
+  <style>
+    *{box-sizing:border-box;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    h1,h2{margin:0 0 8px}
+    .muted{color:#555}
+    table{width:100%;border-collapse:collapse;margin:6px 0 12px}
+    th,td{border:1px solid #ddd;padding:6px 8px;font-size:12px;vertical-align:top}
+    th{background:#f3f3f3;text-align:left}
+    .kv{display:grid;grid-template-columns:160px 1fr;gap:6px 12px;margin:10px 0 14px}
+    .kv div{font-size:13px}
+    .box{border:1px solid #e5e5e5;border-radius:6px;padding:10px;margin:10px 0 12px}
+    .small{font-size:12px}
+  </style>
+
+  <h1>Arbitration Award (Demo)</h1>
+  <div class="muted small">Generated: ${fmtDate()}</div>
+
+  <div class="kv">
+    <div><b>Case ID</b></div><div>#${state.caseId || '—'}</div>
+    <div><b>Preset</b></div><div>${preset.label || caseSelect.value}</div>
+    <div><b>Quorum</b></div><div>${preset.quorum || '—'}</div>
+    <div><b>Escrow</b></div><div>${preset.escrow || '—'}</div>
+    <div><b>Currency</b></div><div>${preset.currency || '—'}</div>
+  </div>
+
+  <div class="box">
+    <b>Case Notes</b>
+    <div class="small">${(caseNotes.value || '').replace(/\n/g,'<br/>')}</div>
+  </div>
+
+  <h2>Evidence Summary</h2>
+  <div class="small muted">Merkle root: ${state.merkle ? state.merkle : '—'}</div>
+  <table>
+    <thead><tr><th>#</th><th>File</th><th>Size</th><th>SHA-256</th></tr></thead>
+    <tbody>${evidenceRows}</tbody>
+  </table>
+
+  <h2>Decision</h2>
+  <div class="kv">
+    <div><b>Decision Hash</b></div><div>${state.decisionHash}</div>
+    <div><b>Anchoring Tx</b></div><div>${state.anchorTx ? state.anchorTx : '—'}</div>
+    <div><b>Execution Tx</b></div><div>${state.execTx ? state.execTx : '—'}</div>
+  </div>
+
+  <h2>Arbitrator Signatures (2/3)</h2>
+  <table>
+    <thead><tr><th>#</th><th>Signer</th><th>Signature</th></tr></thead>
+    <tbody>${signRows}</tbody>
+  </table>
+
+  ${preset.awardHint ? `<div class="box"><b>Simulated Award</b><div class="small">${preset.awardHint}</div></div>` : ''}
+
+  <div class="muted small">This award PDF is generated client-side for demo purposes. Hashes and tx IDs are simulation artifacts unless otherwise indicated.</div>
+  `;
+
+  const opt = {
+    margin: 10,
+    filename: `adr-award-${state.caseId || 'demo'}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  document.body.appendChild(node);
+  await html2pdf().from(node).set(opt).save();
+  document.body.removeChild(node);
+  toast('Award PDF downloaded');
+}
 
 // ---------- Handlers ----------
 btnTheme.onclick=()=>{ const html=document.documentElement; html.setAttribute('data-theme', html.getAttribute('data-theme')==='dark'?'light':'dark'); };
@@ -199,6 +302,9 @@ btnExec.onclick=()=>{
   push('Executing award (escrow release)…'); state.execTx=rnd(32); txEEl.textContent=state.execTx;
   push(`Escrow released (tx: ${state.execTx})`); setBadge('Executed ✓',true); logPresetHints("exec"); btnExec.disabled=true;
 };
+
+// Award PDF 버튼 연결
+btnPdf && (btnPdf.onclick = generateAwardPDF);
 
 // SLA CSV helper
 function parseCSV(text){ const rows=text.trim().split(/\r?\n/).slice(1); return rows.map(r=>{ const [ts,up]=r.split(','); return {ts,up:Number(up)}; }); }
