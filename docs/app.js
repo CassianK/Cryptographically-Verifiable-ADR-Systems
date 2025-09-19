@@ -20,7 +20,109 @@ let state = {
   signatures: [],      // [{signer, sig}]
   audit: []            // log entries for export
 };
+/* ==== Preset catalog (conference-friendly) ==== */
+const PRESETS = {
+  construction: {
+    label: "Construction delay (Owner vs Contractor)",
+    currency: "KRW",
+    escrow: "₩3,000,000,000",
+    quorum: "2 of 3",
+    notes: `Owner claims liquidated damages for 3-month delay; contractor invokes force majeure (heavy rain & overseas material supply). Panel quorum: 2 of 3.`,
+    claim: `ZK claim (optional): total weather suspension days ≥ 20 without full approved extension.`,
+    awardHint: "Release 60% of escrow to Owner; return 40% to Contractor."
+  },
+  saas: {
+    label: "SaaS outage SLA (Customer vs Provider)",
+    currency: "USD",
+    escrow: "$200,000",
+    quorum: "2 of 3",
+    notes: `Customer alleges monthly downtime ≥ 4h per SLA; provider reports 3h 50m. Evidence: monitoring CSV, incident emails.`,
+    claim: `ZK claim: aggregated downtime minutes ≥ 240 (without exposing per-minute logs).`,
+    awardHint: "Release pro-rated service credit; remainder to Provider."
+  },
+  ipRoyalty: {
+    label: "Cross-border IP licensing (Royalty underreporting)",
+    currency: "USD",
+    escrow: "$500,000",
+    quorum: "3 of 5",
+    notes: `Licensor alleges underreported sales in APAC. Licensee submits audited statements; parties disagree on exclusions.`,
+    claim: `ZK claim: reported sales × rate ≤ audited sales × rate − ε (privacy-preserving delta).`,
+    awardHint: "Release delta + interest to Licensor."
+  },
+  supplyDefect: {
+    label: "Supply-chain quality defect (OEM vs Supplier)",
+    currency: "EUR",
+    escrow: "€350,000",
+    quorum: "2 of 3",
+    notes: `OEM claims defect rate exceeded 1.5% threshold; Supplier submits QC reports and rework logs.`,
+    claim: `ZK claim: defect_count / samples ≥ 0.015`,
+    awardHint: "Release remedy cost + liquidated damages to OEM."
+  },
+  milestone: {
+    label: "Freelance milestone non-payment",
+    currency: "USD",
+    escrow: "$30,000",
+    quorum: "1 of 1 (sole arb)",
+    notes: `Client refuses to pay final milestone. Contractor submits delivery hashes & acceptance emails.`,
+    claim: `ZK claim: delivered artifacts match hashed SOW bundle.`,
+    awardHint: "Release final milestone to Contractor."
+  },
+  breachNotice: {
+    label: "Data breach notification SLA",
+    currency: "USD",
+    escrow: "$150,000",
+    quorum: "2 of 3",
+    notes: `Processor allegedly notified Controller after 72h window. Logs & ticket timelines submitted.`,
+    claim: `ZK claim: first notice_time − detect_time ≤ 72h`,
+    awardHint: "Release penalty per SLA to Controller if breach proven."
+  }
+};
 
+/* Populate dropdown and default notes */
+function bootstrapPresets() {
+  caseSelect.innerHTML = "";
+  Object.entries(PRESETS).forEach(([key, v]) => {
+    const opt = document.createElement("option");
+    opt.value = key; opt.textContent = v.label;
+    caseSelect.appendChild(opt);
+  });
+  // default select
+  caseSelect.value = "construction";
+  applyPreset(caseSelect.value);
+}
+
+function applyPreset(key) {
+  const p = PRESETS[key];
+  if (!p) return;
+  caseNotes.value = p.notes;
+  push(`Preset loaded: ${p.label} • Escrow: ${p.escrow} • Quorum: ${p.quorum}`);
+}
+
+/* 선택이 바뀌면 자동으로 설명 교체 */
+caseSelect?.addEventListener("change", (e) => {
+  applyPreset(e.target.value);
+});
+
+/* Proof/Deliberation/Execute 로그를 프리셋에 맞춰 ‘그럴듯하게’ 출력 */
+function logPresetHints(stage) {
+  const p = PRESETS[caseSelect.value];
+  if (!p) return;
+  if (stage === "proof" && p.claim) push(`Claim: ${p.claim}`);
+  if (stage === "exec" && p.awardHint) push(`Award (simulated): ${p.awardHint}`);
+}
+
+/* 기존 버튼 핸들러에 한 줄씩 추가하세요:
+   - Proof 버튼 완료 직후 → logPresetHints("proof")
+   - Execute 버튼 완료 직후 → logPresetHints("exec")
+*/
+// 예시(당신의 기존 핸들러 안에 넣기):
+// btnProof.onclick = ()=>{ ... existing ...; logPresetHints("proof"); ... };
+// btnExec.onclick  = ()=>{ ... existing ...; logPresetHints("exec"); ... };
+
+/* 초기화 마지막에 프리셋 부트스트랩 호출 */
+(function initPresetsOnce(){
+  try { bootstrapPresets(); } catch(e){ /* ignore until DOM is ready */ }
+})();
 // ---------- utils ----------
 const enc = new TextEncoder();
 async function sha256Hex(buf){
