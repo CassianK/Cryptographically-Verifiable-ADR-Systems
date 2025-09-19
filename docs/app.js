@@ -12,7 +12,7 @@ const btnAbout=$('btn-about'), about=$('about'), backdrop=$('about-backdrop');
 const qr=$('qr'), qrBox=$('qr-box'), qrBackdrop=$('qr-backdrop');
 const caseSelect=$('case-select'), caseNotes=$('case-notes'), fileInput=$('file-input'), eList=$('e-list'), presetMeta=$('preset-meta');
 const slaInput=$('sla-input'), slaResult=$('sla-result');
-const btnPdf=$('btn-pdf'); // ← PDF 버튼
+const btnPdf=$('btn-pdf'); // PDF 버튼
 
 // ---------- state ----------
 let state = {
@@ -174,7 +174,17 @@ async function generateAwardPDF(){
     .kv div{font-size:13px}
     .box{border:1px solid #e5e5e5;border-radius:6px;padding:10px;margin:10px 0 12px}
     .small{font-size:12px}
+    .header{border-bottom:2px solid #333;padding-bottom:6px;margin-bottom:12px}
+    .logo{font-size:20px;font-weight:bold;color:#004080}
+    a{color:#004080;text-decoration:none}
   </style>
+
+  <div class="header">
+    <div class="logo">ACM Symposium on Computer Science and Law</div>
+    <div class="muted small">Bridge the Divide Between Computer Science and Law</div>
+    <div class="small"><b>Paper:</b> A Theoretical Framework for Cryptographically Verifiable ADR Systems in Cross-Border Token Security Disputes</div>
+    <div class="small"><b>Authors:</b> Dokyung (DK) Kim, Sangwoo Han &nbsp; | &nbsp; <b>ORCID:</b> <a href="https://orcid.org/0009-0009-4182-4974">0009-0009-4182-4974</a></div>
+  </div>
 
   <h1>Arbitration Award (Demo)</h1>
   <div class="muted small">Generated: ${fmtDate()}</div>
