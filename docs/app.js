@@ -1,15 +1,17 @@
-// ========== tiny dom helpers ==========
+// ---------- tiny dom helpers ----------
 const $ = (id)=>document.getElementById(id);
 const logEl = $('log'), caseIdEl = $('case-id'), merkleEl = $('merkle');
 const dhEl = $('dh'), txAEl = $('tx-anchor'), txEEl = $('tx-exec');
 const badge = $('badge'), toastEl = $('toast');
+const brandLogo = $('brand-logo'), caseIcon = $('case-icon');
 
 const btnOpen=$('btn-open'), btnProof=$('btn-proof'), btnDelib=$('btn-delib');
 const btnAnchor=$('btn-anchor'), btnExec=$('btn-exec');
 const btnReset=$('btn-reset'), btnExport=$('btn-export'), btnCopyDH=$('copy-dh'), btnTheme=$('btn-theme');
-const caseSelect=$('case-select'), caseNotes=$('case-notes'), fileInput=$('file-input'), eList=$('e-list');
+const btnAbout=$('btn-about'), about=$('about'), backdrop=$('about-backdrop');
+const caseSelect=$('case-select'), caseNotes=$('case-notes'), fileInput=$('file-input'), eList=$('e-list'), presetMeta=$('preset-meta');
 
-// ========== state ==========
+// ---------- state ----------
 let state = {
   caseId: 0,
   files: [],           // {name,size,hash}
@@ -21,7 +23,7 @@ let state = {
   audit: []            // log entries for export
 };
 
-// ========== utils ==========
+// ---------- utils ----------
 const enc = new TextEncoder();
 async function sha256Hex(buf){
   const ab = await crypto.subtle.digest('SHA-256', buf);
@@ -39,7 +41,7 @@ function rnd(bytes=32){
 function push(msg){
   const line = `[${now()}] ${msg}`;
   logEl.textContent += line + '\n';
-  logEl.scrollTop = logEl.scrollHeight; // auto-scroll
+  logEl.scrollTop = logEl.scrollHeight;
   state.audit.push(line);
 }
 function toast(msg){
@@ -77,10 +79,11 @@ async function merkleRoot(hexes){
   return layer[0];
 }
 
-// ========== PRESETS (conference-friendly) ==========
+// ---------- PRESETS with icons ----------
 const PRESETS = {
   construction: {
     label: "Construction delay (Owner vs Contractor)",
+    icon: "🏗️",
     currency: "KRW",
     escrow: "₩3,000,000,000",
     quorum: "2 of 3",
@@ -90,6 +93,7 @@ const PRESETS = {
   },
   saas: {
     label: "SaaS outage SLA (Customer vs Provider)",
+    icon: "🖥️",
     currency: "USD",
     escrow: "$200,000",
     quorum: "2 of 3",
@@ -99,6 +103,7 @@ const PRESETS = {
   },
   ipRoyalty: {
     label: "Cross-border IP licensing (Royalty underreporting)",
+    icon: "📄",
     currency: "USD",
     escrow: "$500,000",
     quorum: "3 of 5",
@@ -108,6 +113,7 @@ const PRESETS = {
   },
   supplyDefect: {
     label: "Supply-chain quality defect (OEM vs Supplier)",
+    icon: "🔧",
     currency: "EUR",
     escrow: "€350,000",
     quorum: "2 of 3",
@@ -117,6 +123,7 @@ const PRESETS = {
   },
   milestone: {
     label: "Freelance milestone non-payment",
+    icon: "🧾",
     currency: "USD",
     escrow: "$30,000",
     quorum: "1 of 1 (sole arb)",
@@ -126,6 +133,7 @@ const PRESETS = {
   },
   breachNotice: {
     label: "Data-breach notification SLA",
+    icon: "🔐",
     currency: "USD",
     escrow: "$150,000",
     quorum: "2 of 3",
@@ -148,6 +156,8 @@ function bootstrapPresets() {
 function applyPreset(key) {
   const p = PRESETS[key]; if(!p) return;
   caseNotes.value = p.notes;
+  caseIcon.textContent = p.icon || '⚖️';
+  presetMeta.textContent = `Escrow: ${p.escrow} • Quorum: ${p.quorum} • Currency: ${p.currency}`;
   push(`Preset loaded: ${p.label} • Escrow: ${p.escrow} • Quorum: ${p.quorum}`);
 }
 function logPresetHints(stage) {
@@ -157,7 +167,20 @@ function logPresetHints(stage) {
 }
 caseSelect?.addEventListener("change", (e)=> applyPreset(e.target.value));
 
-// ========== handlers ==========
+// ---------- About modal ----------
+function openAbout(){
+  backdrop.hidden = false;
+  about.showModal();
+}
+function closeAbout(){
+  about.close();
+  backdrop.hidden = true;
+}
+btnAbout.onclick = openAbout;
+backdrop.onclick = closeAbout;
+about.addEventListener('close', ()=>{ backdrop.hidden = true; });
+
+// ---------- handlers ----------
 btnTheme.onclick = ()=>{
   const html = document.documentElement;
   html.setAttribute('data-theme', html.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
@@ -254,7 +277,7 @@ btnExec.onclick = ()=>{
   btnExec.disabled = true;
 };
 
-// ========== init ==========
+// ---------- init ----------
 function boot(){
   reset();
   bootstrapPresets();
