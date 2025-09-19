@@ -12,7 +12,7 @@
 <body>
 <header class="hdr">
   <div class="brand">
-    <div class="logo">⚖️</div>
+    <div class="logo" id="brand-logo">⚖️</div>
     <div class="brand-text">
       <div class="ttl">Verifiable ADR</div>
       <div class="sub">Arbitration Escrow — static demo</div>
@@ -20,6 +20,7 @@
   </div>
 
   <div class="actions">
+    <button id="btn-about" class="ghost" aria-haspopup="dialog">ℹ️ About</button>
     <button id="btn-theme" class="ghost" aria-label="Toggle theme">🌗 Theme</button>
     <button id="btn-export" class="ghost">Export Audit JSON</button>
     <a class="ghost" href="https://github.com/CassianK/Cryptographically-Verifiable-ADR-Systems" target="_blank" rel="noopener">GitHub</a>
@@ -35,13 +36,12 @@
         <span class="lbl">Case preset</span>
         <span id="badge" class="badge">Idle</span>
       </div>
-      <select id="case-select"></select>
-        <option value="construction">Construction delay (Owner vs Contractor)</option>
-        <option value="saas">SaaS outage SLA (Customer vs Provider)</option>
-      </select>
-      <textarea id="case-notes" rows="4" spellcheck="false">
-Owner claims liquidated damages due to 3-month delay; contractor invokes force majeure (heavy rain & overseas material supply). Panel quorum: 2 of 3.
-      </textarea>
+      <div class="preset-head">
+        <div class="preset-icon" id="case-icon" aria-hidden="true">🏗️</div>
+        <select id="case-select"></select>
+      </div>
+      <textarea id="case-notes" rows="4" spellcheck="false"></textarea>
+      <div class="meta" id="preset-meta">—</div>
     </div>
 
     <button id="btn-open" class="cta">1) Open Case</button>
@@ -78,6 +78,32 @@ Owner claims liquidated damages due to 3-month delay; contractor invokes force m
 </footer>
 
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<!-- About modal -->
+<div id="about-backdrop" class="backdrop" hidden></div>
+<dialog id="about" class="about" aria-labelledby="about-title">
+  <form method="dialog">
+    <h3 id="about-title">Cryptographically Verifiable ADR — Demo</h3>
+    <p class="about-sub">Conference-ready static simulation of an arbitration workflow.</p>
+
+    <ul class="about-list">
+      <li><b>Paper:</b> <span id="paper-title">Cryptographically Verifiable ADR Systems</span></li>
+      <li><b>Authors:</b> D. Kim, et al.</li>
+      <li><b>Track:</b> Demo / Systems</li>
+      <li><b>Contact:</b> <a href="mailto:you@example.com">you@example.com</a></li>
+      <li><b>Repo:</b> <a href="https://github.com/CassianK/Cryptographically-Verifiable-ADR-Systems" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+
+    <div class="about-note">
+      This page runs entirely client-side: evidence hashing (per-file SHA-256), Merkle root, mock ZK claim,
+      2-of-3 arbitrator signatures, on-chain anchoring and escrow execution (simulated).
+    </div>
+
+    <div class="about-actions">
+      <button value="cancel" class="ghost">Close</button>
+    </div>
+  </form>
+</dialog>
 
 <script src="./app.js"></script>
 </body>
