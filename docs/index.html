@@ -1,27 +1,27 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
-  <title>Cryptographically Verifiable ADR – Arbitration Escrow Demo</title>
+  <title>Verifiable ADR — Arbitration Escrow Demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="End-to-end demo of a verifiable ADR workflow: evidence hashing (Merkle root), mock ZK proof, 2/3 arbitrator signatures, on-chain anchoring, and escrow execution – all client-side." />
-  <meta property="og:title" content="Cryptographically Verifiable ADR – Demo" />
-  <meta property="og:description" content="Evidence → Proof → Deliberation → Anchor → Execute, reproducible in a static page." />
-  <meta property="og:type" content="website" />
+  <meta name="description" content="Evidence → Proof → Deliberation → Anchor → Execute. A static, conference-ready demo of cryptographically verifiable ADR." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
 <header class="hdr">
   <div class="brand">
-    <div class="dot"></div>
-    <div>
-      <div class="ttl">Cryptographically Verifiable ADR</div>
-      <div class="sub">Static, conference-friendly demonstration</div>
+    <div class="logo">⚖️</div>
+    <div class="brand-text">
+      <div class="ttl">Verifiable ADR</div>
+      <div class="sub">Arbitration Escrow — static demo</div>
     </div>
   </div>
+
   <div class="actions">
+    <button id="btn-theme" class="ghost" aria-label="Toggle theme">🌗 Theme</button>
     <button id="btn-export" class="ghost">Export Audit JSON</button>
-    <button id="btn-reset" class="ghost">Reset</button>
     <a class="ghost" href="https://github.com/CassianK/Cryptographically-Verifiable-ADR-Systems" target="_blank" rel="noopener">GitHub</a>
   </div>
 </header>
@@ -30,19 +30,23 @@
   <section class="left">
     <h1>Arbitration Flow</h1>
 
-    <div class="card">
-      <label class="lbl">Case preset</label>
+    <div class="card fade">
+      <div class="row">
+        <span class="lbl">Case preset</span>
+        <span id="badge" class="badge">Idle</span>
+      </div>
       <select id="case-select">
-        <option value="construction">Construction delay dispute (Owner vs Contractor)</option>
+        <option value="construction">Construction delay (Owner vs Contractor)</option>
+        <option value="saas">SaaS outage SLA (Customer vs Provider)</option>
       </select>
       <textarea id="case-notes" rows="4" spellcheck="false">
 Owner claims liquidated damages due to 3-month delay; contractor invokes force majeure (heavy rain & overseas material supply). Panel quorum: 2 of 3.
       </textarea>
     </div>
 
-    <button id="btn-open">1) Open Case</button>
+    <button id="btn-open" class="cta">1) Open Case</button>
 
-    <div class="card">
+    <div class="card fade">
       <label class="lbl">2) Upload Evidence → Generate Proof</label>
       <input id="file-input" type="file" multiple />
       <div id="e-list" class="elist"></div>
@@ -50,14 +54,14 @@ Owner claims liquidated damages due to 3-month delay; contractor invokes force m
       <button id="btn-proof" class="minor">Generate Mock ZK Proof</button>
     </div>
 
-    <button id="btn-delib">3) Start Deliberation</button>
-    <button id="btn-anchor">4) Anchor Decision</button>
-    <button id="btn-exec">5) Execute Award</button>
+    <button id="btn-delib" class="cta">3) Start Deliberation</button>
+    <button id="btn-anchor" class="cta">4) Anchor Decision</button>
+    <button id="btn-exec" class="cta">5) Execute Award</button>
   </section>
 
-  <section class="right">
+  <section class="right fade">
     <h2>Activity Log</h2>
-    <pre id="log"></pre>
+    <pre id="log" aria-live="polite"></pre>
 
     <div class="facts">
       <div><b>Case ID:</b> <span id="case-id">–</span></div>
@@ -69,8 +73,11 @@ Owner claims liquidated damages due to 3-month delay; contractor invokes force m
 </main>
 
 <footer class="ftr">
-  <div>This page demonstrates the <i>verifiable path</i> only. No wallets, no servers, no personal data; all hashing happens in your browser.</div>
+  <div>This demo showcases the <i>verifiable path</i> only. No wallets / no servers; all hashing runs in your browser.</div>
+  <button id="btn-reset" class="ghost">Reset</button>
 </footer>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script src="./app.js"></script>
 </body>
