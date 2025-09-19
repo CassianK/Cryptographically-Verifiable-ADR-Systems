@@ -1,13 +1,15 @@
-// ---------- helpers ----------
+// ---------- tiny dom helpers ----------
 const $ = (id)=>document.getElementById(id);
 const logEl = $('log'), caseIdEl = $('case-id'), merkleEl = $('merkle');
 const dhEl = $('dh'), txAEl = $('tx-anchor'), txEEl = $('tx-exec');
+const badge = $('badge'), toastEl = $('toast');
 
 const btnOpen=$('btn-open'), btnProof=$('btn-proof'), btnDelib=$('btn-delib');
 const btnAnchor=$('btn-anchor'), btnExec=$('btn-exec');
-const btnReset=$('btn-reset'), btnExport=$('btn-export'), btnCopyDH=$('copy-dh');
+const btnReset=$('btn-reset'), btnExport=$('btn-export'), btnCopyDH=$('copy-dh'), btnTheme=$('btn-theme');
 const caseSelect=$('case-select'), caseNotes=$('case-notes'), fileInput=$('file-input'), eList=$('e-list');
 
+// ---------- state ----------
 let state = {
   caseId: 0,
   files: [],           // {name,size,hash}
@@ -19,7 +21,7 @@ let state = {
   audit: []            // log entries for export
 };
 
-// crypto helpers
+// ---------- utils ----------
 const enc = new TextEncoder();
 async function sha256Hex(buf){
   const ab = await crypto.subtle.digest('SHA-256', buf);
@@ -37,7 +39,17 @@ function rnd(bytes=32){
 function push(msg){
   const line = `[${now()}] ${msg}`;
   logEl.textContent += line + '\n';
+  logEl.scrollTop = logEl.scrollHeight; // auto-scroll
   state.audit.push(line);
+}
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(()=>toastEl.classList.remove('show'), 1600);
+}
+function setBadge(text, ok=false){
+  badge.textContent = text;
+  badge.style.color = ok ? 'var(--good)' : 'var(--muted)';
 }
 function reset(){
   state={caseId:0,files:[],merkle:null,decisionHash:null,anchorTx:null,execTx:null,signatures:[],audit:[]};
@@ -45,9 +57,10 @@ function reset(){
   caseIdEl.textContent='–'; dhEl.textContent='–'; txAEl.textContent='–'; txEEl.textContent='–';
   eList.textContent=''; merkleEl.textContent='Merkle root: –';
   [btnOpen,btnProof,btnDelib,btnAnchor,btnExec].forEach(b=>b.disabled=false);
+  setBadge('Idle');
 }
 
-// simple Merkle root: pairwise SHA256 of concat hex (demo only)
+// simple Merkle root (demo only)
 async function merkleRoot(hexes){
   if(hexes.length===0) return null;
   let layer=[...hexes];
@@ -64,8 +77,14 @@ async function merkleRoot(hexes){
   return layer[0];
 }
 
-// ---------- UI logic ----------
-btnReset.onclick = reset;
+// ---------- handlers ----------
+btnTheme.onclick = ()=>{
+  const html = document.documentElement;
+  html.setAttribute('data-theme', html.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
+};
+
+btnReset.onclick = ()=>{ reset(); toast('State cleared'); };
+
 btnExport.onclick = ()=>{
   const blob = new Blob([JSON.stringify({meta:{
       preset: caseSelect.value, notes: caseNotes.value.trim()
@@ -74,26 +93,28 @@ btnExport.onclick = ()=>{
   a.href = URL.createObjectURL(blob);
   a.download = `adr-audit-${Date.now()}.json`;
   a.click();
+  toast('Audit JSON exported');
 };
+
 btnCopyDH.onclick = async ()=>{
   if(!state.decisionHash) return;
   await navigator.clipboard?.writeText(state.decisionHash);
   btnCopyDH.textContent='Copied';
   setTimeout(()=>btnCopyDH.textContent='Copy',1200);
+  toast('Decision hash copied');
 };
 
 btnOpen.onclick = ()=>{
   state.caseId++;
   caseIdEl.textContent=String(state.caseId);
-  push('Opening case and locking escrow (static demo)…');
+  push('Opening case and locking escrow (static)…');
   push(`Case #${state.caseId} opened (tx: ${rnd(32)})`);
-  // preset narrative
   push(`Preset: ${caseSelect.options[caseSelect.selectedIndex].text}`);
   push(`Notes: ${caseNotes.value.trim()}`);
+  setBadge('Open');
   btnOpen.disabled = true;
 };
 
-// evidence selection → hash list
 fileInput.onchange = async (e)=>{
   state.files=[]; eList.textContent='Hashing files…';
   const items = await Promise.all([...e.target.files].map(async f=>{
@@ -109,37 +130,36 @@ fileInput.onchange = async (e)=>{
     state.merkle = root;
     merkleEl.textContent = `Merkle root: ${root}`;
     push(`Evidence uploaded: ${items.length} file(s). Merkle root computed.`);
+    setBadge('Evidence ✓', true);
   }
 };
 
 btnProof.onclick = ()=>{
-  if(!state.merkle){
-    push('(!) Please add at least one evidence file to compute Merkle root.');
-    return;
-  }
+  if(!state.merkle){ push('(!) Add at least one evidence file first.'); toast('Add evidence first'); return; }
   push('Generating mock ZK proof from Merkle root…');
-  // derive decision hash from merkle + preset (deterministic-ish for demo)
   state.decisionHash = rnd(32);
   dhEl.textContent = state.decisionHash;
   push(`Proof verified. Decision hash: ${state.decisionHash}`);
+  setBadge('Proved ✓', true);
   btnProof.disabled = true;
 };
 
 btnDelib.onclick = ()=>{
   push('Starting MPC-like deliberation (simulated)…');
-  // mock 2/3 signatures
   const s1={signer:rnd(20), sig:rnd(65)}, s2={signer:rnd(20), sig:rnd(65)};
   state.signatures=[s1,s2];
   push(`Collected 2/3 arbitrator signatures:\n - ${s1.signer}\n - ${s2.signer}`);
+  setBadge('2/3 Signatures ✓', true);
   btnDelib.disabled = true;
 };
 
 btnAnchor.onclick = ()=>{
-  if(!state.decisionHash){ push('(!) Generate proof first.'); return; }
+  if(!state.decisionHash){ push('(!) Generate proof first.'); toast('Generate proof first'); return; }
   push('Anchoring decision hash on-chain (static)…');
   state.anchorTx = rnd(32);
   txAEl.textContent = state.anchorTx;
   push(`Decision anchored (tx: ${state.anchorTx})`);
+  setBadge('Anchored ✓', true);
   btnAnchor.disabled = true;
 };
 
@@ -148,6 +168,7 @@ btnExec.onclick = ()=>{
   state.execTx = rnd(32);
   txEEl.textContent = state.execTx;
   push(`Escrow released (tx: ${state.execTx})`);
+  setBadge('Executed ✓', true);
   btnExec.disabled = true;
 };
 
