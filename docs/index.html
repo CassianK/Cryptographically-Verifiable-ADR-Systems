@@ -31,6 +31,7 @@
   <section class="left">
     <h1>Arbitration Flow</h1>
 
+    <!-- Case preset -->
     <div class="card fade">
       <div class="row">
         <span class="lbl">Case preset</span>
@@ -43,21 +44,25 @@
       <textarea id="case-notes" rows="4" spellcheck="false"></textarea>
       <div class="meta" id="preset-meta">—</div>
     </div>
-      <!-- SLA helper block -->
-      <div class="card fade">
-        <label class="lbl">SLA helper (CSV)</label>
-        <div class="meta">CSV columns: <code>timestamp,up</code> (up=1/0).</div>
-        <input id="sla-input" type="file" accept=".csv" />
-        <div class="meta" id="sla-result">No CSV loaded.</div>
-      </div>
+
     <button id="btn-open" class="cta">1) Open Case</button>
 
+    <!-- Evidence + proof -->
     <div class="card fade">
       <label class="lbl">2) Upload Evidence → Generate Proof</label>
       <input id="file-input" type="file" multiple />
-      <div id="e-list" class="elist"></div>
+      <div id="e-list" class="elist">(no files)</div>
       <div class="meta"><span id="merkle">Merkle root: –</span></div>
+      <div class="meta">Click a file to view its Merkle proof path.</div>
       <button id="btn-proof" class="minor">Generate Mock ZK Proof</button>
+    </div>
+
+    <!-- SLA helper (for SaaS preset etc.) -->
+    <div class="card fade">
+      <label class="lbl">SLA helper (CSV)</label>
+      <div class="meta">CSV columns: <code>timestamp,up</code> (up=1/0). One row per minute or fixed interval.</div>
+      <input id="sla-input" type="file" accept=".csv" />
+      <div class="meta" id="sla-result">No CSV loaded.</div>
     </div>
 
     <button id="btn-delib" class="cta">3) Start Deliberation</button>
@@ -112,6 +117,18 @@
   </form>
 </dialog>
 
+<!-- QR modal -->
+<div id="qr-backdrop" class="backdrop" hidden></div>
+<dialog id="qr" class="about" aria-labelledby="qr-title">
+  <form method="dialog">
+    <h3 id="qr-title">Share audit JSON</h3>
+    <div id="qr-box" style="display:grid;place-items:center;min-height:180px"></div>
+    <div class="about-actions"><button value="cancel" class="ghost">Close</button></div>
+  </form>
+</dialog>
+
+<!-- libs & app -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-MYJkZtBsraE0S8q7o2pTg8Z6HjC2rq8v1fxyJtqH9qL8p3a7wWcQm6yFVQmQ+7C2o+q6gq3cv0cG8b9Yb0iX0A==" crossorigin="anonymous"></script>
 <script src="./app.js"></script>
 </body>
 </html>
