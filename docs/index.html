@@ -1,27 +1,77 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Arbitration Escrow Demo (Static)</title>
+  <title>Cryptographically Verifiable ADR – Arbitration Escrow Demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="End-to-end demo of a verifiable ADR workflow: evidence hashing (Merkle root), mock ZK proof, 2/3 arbitrator signatures, on-chain anchoring, and escrow execution – all client-side." />
+  <meta property="og:title" content="Cryptographically Verifiable ADR – Demo" />
+  <meta property="og:description" content="Evidence → Proof → Deliberation → Anchor → Execute, reproducible in a static page." />
+  <meta property="og:type" content="website" />
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <main class="wrap">
-    <section class="left">
-      <h1>Arbitration Flow</h1>
-      <button id="btn-open">1) Open Case</button>
-      <button id="btn-proof">2) Upload Evidence → Generate Proof</button>
-      <button id="btn-delib">3) Start Deliberation</button>
-      <button id="btn-anchor">4) Anchor Decision</button>
-      <button id="btn-exec">5) Execute Award</button>
-    </section>
+<header class="hdr">
+  <div class="brand">
+    <div class="dot"></div>
+    <div>
+      <div class="ttl">Cryptographically Verifiable ADR</div>
+      <div class="sub">Static, conference-friendly demonstration</div>
+    </div>
+  </div>
+  <div class="actions">
+    <button id="btn-export" class="ghost">Export Audit JSON</button>
+    <button id="btn-reset" class="ghost">Reset</button>
+    <a class="ghost" href="https://github.com/CassianK/Cryptographically-Verifiable-ADR-Systems" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</header>
 
-    <section class="right">
-      <h2>Activity Log</h2>
-      <pre id="log"></pre>
-    </section>
-  </main>
-  <script src="./app.js"></script>
+<main class="wrap">
+  <section class="left">
+    <h1>Arbitration Flow</h1>
+
+    <div class="card">
+      <label class="lbl">Case preset</label>
+      <select id="case-select">
+        <option value="construction">Construction delay dispute (Owner vs Contractor)</option>
+      </select>
+      <textarea id="case-notes" rows="4" spellcheck="false">
+Owner claims liquidated damages due to 3-month delay; contractor invokes force majeure (heavy rain & overseas material supply). Panel quorum: 2 of 3.
+      </textarea>
+    </div>
+
+    <button id="btn-open">1) Open Case</button>
+
+    <div class="card">
+      <label class="lbl">2) Upload Evidence → Generate Proof</label>
+      <input id="file-input" type="file" multiple />
+      <div id="e-list" class="elist"></div>
+      <div class="meta"><span id="merkle">Merkle root: –</span></div>
+      <button id="btn-proof" class="minor">Generate Mock ZK Proof</button>
+    </div>
+
+    <button id="btn-delib">3) Start Deliberation</button>
+    <button id="btn-anchor">4) Anchor Decision</button>
+    <button id="btn-exec">5) Execute Award</button>
+  </section>
+
+  <section class="right">
+    <h2>Activity Log</h2>
+    <pre id="log"></pre>
+
+    <div class="facts">
+      <div><b>Case ID:</b> <span id="case-id">–</span></div>
+      <div><b>Decision hash:</b> <span id="dh">–</span> <button id="copy-dh" class="chip">Copy</button></div>
+      <div><b>Anchoring tx:</b> <span id="tx-anchor">–</span></div>
+      <div><b>Execution tx:</b> <span id="tx-exec">–</span></div>
+    </div>
+  </section>
+</main>
+
+<footer class="ftr">
+  <div>This page demonstrates the <i>verifiable path</i> only. No wallets, no servers, no personal data; all hashing happens in your browser.</div>
+</footer>
+
+<script src="./app.js"></script>
 </body>
 </html>
