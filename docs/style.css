@@ -1,73 +1,56 @@
 /* ==========================================================================
-   Verifiable ADR – UI Styles (screen + print-safe)
-   - Dark/Light themes with high-contrast defaults
-   - Matches index structure/classes in index-11.html
-   - Print/PDF overrides to avoid translucent/low-contrast ink
+   Verifiable ADR — Screen & Print CSS (v2)
+   - Dark/Light themes
+   - Headings line-height fix (겹침 방지)
+   - Long hex/URLs wrapping
+   - Print/PDF high-contrast overrides
    ========================================================================== */
 
 /* ===== Theme tokens ===== */
 :root{
-  --bg:#0b1220;            /* page background (dark) */
-  --panel:#0f172a;         /* card/panel bg (dark) */
-  --ink:#e6edf7;           /* primary text (dark) */
-  --muted:#94a3b8;         /* secondary text (dark) */
-  --brand:#6ea8ff;
-  --brand-2:#8b5cf6;
-  --card:rgba(255,255,255,.06);
-  --stroke:rgba(255,255,255,.08);
-  --ring:#1f2a44;
-  --good:#22c55e;
-  --warn:#f59e0b;
-  --danger:#ef4444;
+  --bg:#0b1220; --panel:#0f172a; --ink:#e6edf7; --muted:#94a3b8;
+  --brand:#6ea8ff; --brand-2:#8b5cf6;
+  --card:rgba(255,255,255,.06); --stroke:rgba(255,255,255,.08);
+  --ring:#1f2a44; --good:#22c55e; --warn:#f59e0b; --danger:#ef4444;
 
-  --radius-lg:16px;
-  --radius-md:12px;
+  --radius-lg:16px; --radius:12px;
   --shadow:0 8px 28px rgba(0,0,0,.2);
 }
-
 html[data-theme="light"]{
-  --bg:#f6f7fb;
-  --panel:#ffffff;
-  --ink:#0b1220;
-  --muted:#64748b;
-  --brand:#2563eb;
-  --brand-2:#7c3aed;
-  --card:#ffffff;
-  --stroke:#e8edf4;
-  --ring:#dbeafe;
-  --good:#16a34a;
-  --warn:#b45309;
-  --danger:#b91c1c;
+  --bg:#f6f7fb; --panel:#ffffff; --ink:#0b1220; --muted:#64748b;
+  --brand:#2563eb; --brand-2:#7c3aed; --card:#ffffff;
+  --stroke:#e8edf4; --ring:#dbeafe; --good:#16a34a; --warn:#b45309; --danger:#b91c1c;
 }
 
 /* ===== Base ===== */
 *{ box-sizing:border-box }
 html,body{ height:100% }
 body{
-  margin:0;
-  background:var(--bg);
-  color:var(--ink);
-  font:16px/1.45 "Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.5 "Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
 }
 a{ color:inherit; text-decoration:none }
 code,pre{ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace }
+
+/* Headings: 겹침 방지 */
+h1{ margin:12px 0 10px; line-height:1.25; font-weight:700 }
+h2{ margin:16px 0 10px; line-height:1.35; font-weight:700 }
+h3{ margin:12px 0 8px;  line-height:1.35; font-weight:600 }
+.small{ font-size:12px; line-height:1.45 }
 
 /* ===== Header ===== */
 .hdr{
   position:sticky; top:0; z-index:10;
   display:flex; justify-content:space-between; align-items:center; gap:16px;
-  padding:14px 20px;
-  border-bottom:1px solid var(--stroke);
+  padding:14px 20px; border-bottom:1px solid var(--stroke);
   backdrop-filter:saturate(1.2) blur(8px);
   background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,0));
 }
 .brand{ display:flex; align-items:center; gap:12px }
 .logo{
   width:36px; height:36px; display:grid; place-items:center; border-radius:12px;
-  background:linear-gradient(135deg,var(--brand),var(--brand-2));
-  box-shadow:0 6px 20px rgba(0,0,0,.25);
+  background:linear-gradient(135deg,var(--brand),var(--brand-2)); box-shadow:0 6px 20px rgba(0,0,0,.25);
 }
 .ttl{ font-weight:700 }
 .sub{ font-size:12px; color:var(--muted) }
@@ -83,12 +66,10 @@ code,pre{ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace }
 .ghost:disabled{ opacity:.5; cursor:not-allowed }
 
 .cta{
-  display:block; width:100%;
-  padding:16px 14px; margin:12px 0;
+  display:block; width:100%; padding:16px 14px; margin:12px 0;
   border:0; border-radius:14px; font-weight:700; color:#fff; cursor:pointer;
   background:linear-gradient(135deg,var(--brand),var(--brand-2));
-  box-shadow:var(--shadow);
-  transition:filter .2s, transform .2s;
+  box-shadow:var(--shadow); transition:filter .2s, transform .2s;
 }
 .cta:hover{ filter:brightness(1.05); transform:translateY(-1px) }
 .minor{
@@ -103,25 +84,20 @@ code,pre{ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace }
   display:grid; gap:24px; grid-template-columns:440px 1fr;
 }
 .left h1{ margin:4px 0 12px }
-.right h2{ margin:0 0 12px }
 
-/* ===== Cards & Elements ===== */
+/* ===== Cards & Inputs ===== */
 .card{
   background:var(--card); border:1px solid var(--stroke);
   border-radius:var(--radius-lg); padding:14px 14px 10px;
 }
 .row{ display:flex; align-items:center; justify-content:space-between }
 .lbl{ font-weight:700; color:var(--muted) }
-.badge{
-  border:1px solid var(--stroke); border-radius:999px; padding:4px 10px;
-  font-size:12px; color:var(--muted)
-}
+.badge{ border:1px solid var(--stroke); border-radius:999px; padding:4px 10px; font-size:12px; color:var(--muted) }
 
 .preset-head{ display:flex; gap:10px; align-items:center; margin-top:8px }
 .preset-icon{
   width:40px; height:40px; border-radius:12px; display:grid; place-items:center; font-size:22px;
-  background:linear-gradient(135deg,var(--brand),var(--brand-2));
-  box-shadow:0 6px 20px rgba(0,0,0,.25);
+  background:linear-gradient(135deg,var(--brand),var(--brand-2)); box-shadow:0 6px 20px rgba(0,0,0,.25);
 }
 
 textarea, select, input[type=file]{
@@ -130,6 +106,7 @@ textarea, select, input[type=file]{
 }
 textarea::placeholder{ color:var(--muted) }
 
+/* Evidence list */
 .elist{
   font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   background:rgba(0,0,0,.15); border:1px dashed var(--stroke);
@@ -138,17 +115,20 @@ textarea::placeholder{ color:var(--muted) }
 .elist button.file{
   width:100%; text-align:left; border:1px solid var(--stroke);
   background:transparent; color:var(--ink); padding:8px 10px; border-radius:10px;
-  margin:6px 0; cursor:pointer;
+  margin:6px 0; cursor:pointer; word-break:break-all;
 }
 .elist button.file:hover{ border-color:var(--ring) }
 
 .meta{ color:var(--muted); font-size:13px }
 
-/* ===== Activity Log ===== */
+/* ===== Right column ===== */
+.right h2{ margin:0 0 12px }
 #log{
   background:var(--panel); border:1px solid var(--stroke); color:var(--ink);
   border-radius:16px; padding:16px; min-height:460px; white-space:pre-wrap; overflow:auto;
 }
+
+/* Facts */
 .facts{ margin-top:12px; display:grid; gap:8px }
 .chip{
   display:inline-block; border:1px solid var(--ring); background:transparent; color:var(--ink);
@@ -158,7 +138,7 @@ textarea::placeholder{ color:var(--muted) }
 /* ===== Footer ===== */
 .ftr{
   display:flex; gap:10px; justify-content:center; align-items:center; color:var(--muted);
-  border-top:1px solid var(--stroke); padding:16px 10px; margin-top:12px
+  border-top:1px solid var(--stroke); padding:16px 10px; margin-top:12px;
 }
 
 /* ===== Toast ===== */
@@ -171,12 +151,10 @@ textarea::placeholder{ color:var(--muted) }
 .toast.show{ opacity:1; transform:translateX(-50%) translateY(0) }
 
 /* ===== Modals (About / QR) ===== */
-.backdrop{
-  position:fixed; inset:0; background:rgba(0,0,0,.45); backdrop-filter:blur(2px); z-index:80
-}
+.backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.45); backdrop-filter:blur(2px); z-index:80 }
 .about{
   border:1px solid var(--stroke); background:var(--panel); color:var(--ink);
-  border-radius:14px; padding:18px; max-width:640px; width:calc(100% - 32px); z-index:100
+  border-radius:14px; padding:18px; max-width:640px; width:calc(100% - 32px); z-index:100;
 }
 .about::backdrop{ background:transparent }
 .about-sub{ margin-top:-6px; color:var(--muted) }
@@ -194,20 +172,29 @@ textarea::placeholder{ color:var(--muted) }
   .hdr{ position:static; background:transparent; border:none }
 }
 
-/* ===== Print/PDF safety =====
-   html2pdf/html2canvas will snapshot computed styles.
-   Ensure high-contrast text and solid backgrounds when printing.
-   (This also improves OS-native "Print to PDF".)
+/* ===== Tables (generic) ===== */
+table{ width:100%; border-collapse:collapse; margin:6px 0 12px; table-layout:fixed }
+th,td{
+  border:1px solid var(--stroke);
+  padding:6px 8px; font-size:13px; vertical-align:top;
+  word-break:break-all; /* 매우 긴 해시/URL 줄바꿈 */
+}
+th{ background:rgba(255,255,255,.06); text-align:left }
+html[data-theme="light"] th{ background:#f3f6fb }
+
+/* ===== Print/PDF =====
+   - 진한 먹색 텍스트와 흰 배경 강제
+   - 투명/그라디언트 제거
 */
 @media print{
-  /* Force white background & dark ink for all printable content */
   :root{
     --bg:#ffffff; --panel:#ffffff; --ink:#111111; --muted:#333333;
     --card:#ffffff; --stroke:#dddddd; --ring:#999999;
   }
+  *{ -webkit-print-color-adjust:exact; print-color-adjust:exact }
   body{ background:#ffffff !important; color:#111 !important }
-  .hdr{ background:#ffffff !important; backdrop-filter:none !important }
-  .card, #log, .about{ background:#ffffff !important }
+  .hdr{ background:#ffffff !important; backdrop-filter:none !important; border-color:#ddd !important }
+  .card, #log, .about{ background:#ffffff !important; border-color:#ddd !important }
   .logo{ box-shadow:none }
   a{ color:#004080 !important; text-decoration:none !important }
 }
