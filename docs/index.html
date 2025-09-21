@@ -4,181 +4,33 @@
   <meta charset="utf-8" />
   <title>Verifiable ADR — MVP Demo (Trinos Strategy)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="A static, conference-ready simulation of cryptographically verifiable ADR: Evidence → Proof → Deliberation → Anchor → Execute." />
-  <meta property="og:title" content="Verifiable ADR — MVP Demo" />
-  <meta property="og:description" content="Try the interactive flow: Evidence → Proof → Deliberation → Anchor → Execute." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/logo.svg" />
-  <link rel="canonical" href="./" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-<header class="hdr">
-  <div class="brand">
-    <img src="assets/logo.svg" alt="Trinos ADR" class="logo" />
-    <div class="brand-text">
-      <div class="ttl">Verifiable ADR — MVP</div>
-      <div class="sub">Arbitration Escrow • static, client-side only</div>
-    </div>
-  </div>
-  <div class="actions">
-    <nav class="nav" aria-label="Primary">
-      <a href="../">Home</a>
-      <a href="./">MVP</a>
-      <a href="https://github.com/CassianK/Cryptographically-Verifiable-ADR-Systems" target="_blank" rel="noopener">GitHub</a>
-    </nav>
-    <button id="btn-about" class="ghost" aria-haspopup="dialog">ℹ️ About</button>
-    <button id="btn-theme" class="ghost" aria-label="Toggle theme">🌗 Theme</button>
-    <button id="btn-export" class="ghost">Export audit (JSON + QR)</button>
-    <button id="btn-pdf" class="ghost">Export demo award (PDF, watermark)</button>
-  </div>
-</header>
-
 <section class="wrap hero">
-  <div>
-    <h1>Evidence → Proof → Deliberation → Anchor → Execute</h1>
-    <p>Conference reviewers can test the full cryptographic path in-browser. No servers, no wallets; all hashing runs locally.</p>
-    <button class="cta" onclick="document.getElementById('main').scrollIntoView({behavior:'smooth'})">Try the demo ↓</button>
-  </div>
   <div class="cover" aria-label="ADR pipeline diagram">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 320" width="460" height="150" role="img" aria-label="ADR pipeline diagram">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 320"
+     style="width:100%; max-width:980px; height:auto; display:block; margin:0 auto;"
+     role="img" aria-label="ADR pipeline diagram">
   <defs>
     <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#7c3aed"/>
     </linearGradient>
     <style>
       .card { fill: #0f172a; stroke:#1f2a44; stroke-width:1.5; rx:18; ry:18; }
-      .txt { font: 600 16px Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill:#e6edf7 }
-      .sub { font: 12px Inter, system-ui; fill:#94a3b8 }
-      .num { font: 700 14px Inter; fill: #fff }
+      .txt { font: 600 20px Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill:#e6edf7 }
+      .sub { font: 14px Inter, system-ui; fill:#94a3b8 }
+      .num { font: 700 16px Inter; fill: #fff }
     </style>
   </defs>
   <rect x="45" y="155" width="890" height="10" fill="url(#g1)" opacity="0.55"/>
-  <g transform="translate(60,60)"><rect class="card" width="160" height="180" /><circle cx="20" cy="24" r="12" fill="url(#g1)"/><text x="20" y="28" text-anchor="middle" class="num">1</text><text x="80" y="66" text-anchor="middle" class="txt">Evidence</text><text x="80" y="92" text-anchor="middle" class="sub">hash → SHA-256</text></g>
-  <g transform="translate(240,60)"><rect class="card" width="160" height="180" /><circle cx="20" cy="24" r="12" fill="url(#g1)"/><text x="20" y="28" text-anchor="middle" class="num">2</text><text x="80" y="66" text-anchor="middle" class="txt">Proof</text><text x="80" y="92" text-anchor="middle" class="sub">Merkle → mock ZK</text></g>
-  <g transform="translate(420,60)"><rect class="card" width="160" height="180" /><circle cx="20" cy="24" r="12" fill="url(#g1)"/><text x="20" y="28" text-anchor="middle" class="num">3</text><text x="80" y="66" text-anchor="middle" class="txt">Deliberation</text><text x="80" y="92" text-anchor="middle" class="sub">2/3 signatures</text></g>
-  <g transform="translate(600,60)"><rect class="card" width="160" height="180" /><circle cx="20" cy="24" r="12" fill="url(#g1)"/><text x="20" y="28" text-anchor="middle" class="num">4</text><text x="80" y="66" text-anchor="middle" class="txt">Anchor</text><text x="80" y="92" text-anchor="middle" class="sub">on-chain hash</text></g>
-  <g transform="translate(780,60)"><rect class="card" width="160" height="180" /><circle cx="20" cy="24" r="12" fill="url(#g1)"/><text x="20" y="28" text-anchor="middle" class="num">5</text><text x="80" y="66" text-anchor="middle" class="txt">Execute</text><text x="80" y="92" text-anchor="middle" class="sub">escrow release</text></g>
+  <g transform="translate(60,60)"><rect class="card" width="160" height="180" /><circle cx="20" cy="24" r="12" fill="url(#g1)"/><text x="20" y="28" text-anchor="middle" class="num">1</text><text x="80" y="66" text-anchor="middle" class="txt">Evidence</text><text x="80" y="96" text-anchor="middle" class="sub">hash → SHA-256</text></g>
+  <g transform="translate(240,60)"><rect class="card" width="160" height="180" /><circle cx="20" cy="24" r="12" fill="url(#g1)"/><text x="20" y="28" text-anchor="middle" class="num">2</text><text x="80" y="66" text-anchor="middle" class="txt">Proof</text><text x="80" y="96" text-anchor="middle" class="sub">Merkle → mock ZK</text></g>
+  <g transform="translate(420,60)"><rect class="card" width="160" height="180" /><circle cx="20" cy="24" r="12" fill="url(#g1)"/><text x="20" y="28" text-anchor="middle" class="num">3</text><text x="80" y="66" text-anchor="middle" class="txt">Deliberation</text><text x="80" y="96" text-anchor="middle" class="sub">2/3 signatures</text></g>
+  <g transform="translate(600,60)"><rect class="card" width="160" height="180" /><circle cx="20" cy="24" r="12" fill="url(#g1)"/><text x="20" y="28" text-anchor="middle" class="num">4</text><text x="80" y="66" text-anchor="middle" class="txt">Anchor</text><text x="80" y="96" text-anchor="middle" class="sub">on-chain hash</text></g>
+  <g transform="translate(780,60)"><rect class="card" width="160" height="180" /><circle cx="20" cy="24" r="12" fill="url(#g1)"/><text x="20" y="28" text-anchor="middle" class="num">5</text><text x="80" y="66" text-anchor="middle" class="txt">Execute</text><text x="80" y="96" text-anchor="middle" class="sub">escrow release</text></g>
 </svg>
   </div>
 </section>
-
-<main id="main" class="wrap">
-  <section class="left">
-    <h1>Arbitration Flow</h1>
-
-    <div class="card fade">
-      <div class="row">
-        <span class="lbl">Case preset</span>
-        <span id="badge" class="badge">Idle</span>
-      </div>
-      <div class="preset-head">
-        <div class="preset-icon" id="case-icon" aria-hidden="true">🏗️</div>
-        <select id="case-select"></select>
-      </div>
-      <textarea id="case-notes" rows="4" spellcheck="false" placeholder="Panel quorum, escrow, factual notes…"></textarea>
-      <div class="meta" id="preset-meta">—</div>
-    </div>
-
-    <button id="btn-open" class="cta">1) Open Case</button>
-
-    <div class="card fade">
-      <label class="lbl">2) Upload Evidence → Generate Proof</label>
-      <input id="file-input" type="file" multiple />
-      <div id="e-list" class="elist">(no files)</div>
-      <div class="meta"><span id="merkle">Merkle root: –</span></div>
-      <div class="meta">Click a file to view its Merkle proof path.</div>
-      <button id="btn-proof" class="minor">Generate Mock ZK Proof</button>
-    </div>
-
-    <div class="card fade">
-      <label class="lbl">SLA helper (CSV)</label>
-      <div class="meta">CSV columns: <code>timestamp,up</code> (up=1/0). One row per minute or fixed interval.</div>
-      <input id="sla-input" type="file" accept=".csv" />
-      <div class="meta" id="sla-result">No CSV loaded.</div>
-    </div>
-
-    <button id="btn-delib" class="cta">3) Start Deliberation</button>
-    <button id="btn-anchor" class="cta">4) Anchor Decision</button>
-    <button id="btn-exec" class="cta">5) Execute Award</button>
-  </section>
-
-  <section class="right fade">
-    <h2>Activity Log</h2>
-    <pre id="log" aria-live="polite"></pre>
-
-    <div class="facts">
-      <div><b>Case ID:</b> <span id="case-id">–</span></div>
-      <div><b>Decision hash:</b> <span id="dh">–</span> <button id="copy-dh" class="chip">Copy</button></div>
-      <div><b>Anchoring tx:</b> <span id="tx-anchor">–</span></div>
-      <div><b>Execution tx:</b> <span id="tx-exec">–</span></div>
-    </div>
-  </section>
-</main>
-
-<footer class="ftr">
-  <div>This demo showcases the <i>verifiable path</i> only. No wallets / no servers; all hashing runs in your browser.</div>
-  <button id="btn-reset" class="ghost">Reset</button>
-</footer>
-
-<div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-<!-- About modal -->
-<div id="about-backdrop" class="backdrop" hidden></div>
-<dialog id="about" class="about" aria-labelledby="about-title">
-  <form method="dialog">
-    <h3 id="about-title">A Theoretical Framework for Cryptographically Verifiable ADR Systems in Cross-Border Token Security Disputes</h3>
-    <p class="about-sub">Conference-ready static simulation of an arbitration workflow. Full manuscript available upon request.</p>
-
-    <ul class="about-list">
-      <li><b>Author:</b> Dokyung (DK) Kim</li>
-      <li><b>ORCID:</b> <a href="https://orcid.org/0009-0009-4182-4974" target="_blank" rel="noopener">0009-0009-4182-4974</a></li>
-      <li><b>Venue:</b> <a href="https://computersciencelaw.org/2026/" target="_blank" rel="noopener">ACM Symposium on Computer Science and Law (2026)</a></li>
-      <li><b>Theme:</b> Bridge the Divide Between Computer Science and Law</li>
-      <li><b>Repo:</b> <a href="https://github.com/CassianK/Cryptographically-Verifiable-ADR-Systems" target="_blank" rel="noopener">GitHub</a></li>
-      <li><b>Contact:</b> <a href="mailto:dk@trinos.group">dk@trinos.group</a></li>
-    </ul>
-
-    <div class="about-actions">
-      <a class="ghost" href="mailto:dk@trinos.group?subject=Manuscript%20request%20(Verifiable%20ADR)">Request manuscript</a>
-      <button value="cancel" class="ghost">Close</button>
-    </div>
-  </form>
-</dialog>
-
-<!-- QR modal -->
-<div id="qr-backdrop" class="backdrop" hidden></div>
-<dialog id="qr" class="about" aria-labelledby="qr-title">
-  <form method="dialog">
-    <h3 id="qr-title">Share audit JSON</h3>
-    <div id="qr-box" style="display:grid;place-items:center;min-height:180px"></div>
-    <div class="about-actions"><button value="cancel" class="ghost">Close</button></div>
-  </form>
-</dialog>
-
-<!-- libs -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-MYJkZtBsraE0S8q7o2pTg8Z6HjC2rq8v1fxyJtqH9qL8p3a7wWcQm6yFVQmQ+7C2o+q6gq3cv0cG8b9Yb0iX0A==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-<!-- Fallback boot: if app.js didn't run, restore presets & basic handlers -->
-<script>
-(function(){
-  function fallbackBoot(){
-    var sel = document.getElementById('case-select');
-    if(!sel) return;
-    if(sel.options.length > 0) return; // app.js already filled it
-    var PRESETS = {construction:'Construction delay (Owner vs Contractor)', saas:'SaaS outage SLA (Customer vs Provider)', ipRoyalty:'Cross-border IP licensing (Royalty underreporting)', supplyDefect:'Supply-chain quality defect (OEM vs Supplier)', milestone:'Freelance milestone non-payment'};
-    sel.innerHTML = '';
-    Object.entries(PRESETS).forEach(function(kv){ var o=document.createElement('option'); o.value=kv[0]; o.text = kv[1]; sel.appendChild(o); });
-    sel.value = 'construction';
-  }
-  window.addEventListener('load', fallbackBoot);
-})();
-</script>
-
-<!-- external app (unchanged) -->
-<script defer src="./app.js"></script>
 </body>
 </html>
