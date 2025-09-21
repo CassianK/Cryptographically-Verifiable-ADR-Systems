@@ -88,7 +88,7 @@ async function generateAwardPDF(){
     <div class="logo"><a href="https://computersciencelaw.org/2026/" target="_blank" rel="noopener">ACM Symposium on Computer Science and Law (2026)</a></div>
     <div class="muted small">Bridge the Divide Between Computer Science and Law</div>
     <div class="small"><b>Paper:</b> A Theoretical Framework for Cryptographically Verifiable ADR Systems in Cross-Border Token Security Disputes</div>
-    <div class="small"><b>Authors:</b> Dokyung (DK) Kim, Sangwoo Han &nbsp; | &nbsp; <b>ORCID:</b> <a href="https://orcid.org/0009-0009-4182-4974">0009-0009-4182-4974</a></div>
+    <div class="small"><b>Authors:</b> Dokyung (DK) Kim &nbsp; | &nbsp; <b>ORCID:</b> <a href="https://orcid.org/0009-0009-4182-4974">0009-0009-4182-4974</a></div>
   </div>
   <h1>Arbitration Award (Demo)</h1>
   <div class="muted small">Generated: ${fmtDate()}</div>
