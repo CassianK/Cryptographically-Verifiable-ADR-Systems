@@ -42,11 +42,26 @@
     <p>Conference reviewers can test the full cryptographic path in-browser. No servers, no wallets; all hashing runs locally.</p>
     <button class="cta" onclick="document.getElementById('main').scrollIntoView({behavior:'smooth'})">Try the demo ↓</button>
   </div>
-  <div class="cover">
-    <!-- Use <object> for robust SVG loading; cache-bust with ?v=2 -->
-    <object type="image/svg+xml" data="./assets/diagram.svg?v=2" width="460" height="150" aria-label="ADR pipeline diagram">
-      ADR pipeline diagram
-    </object>
+  <div class="cover" aria-label="ADR pipeline diagram">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 320" width="460" height="150" role="img" aria-label="ADR pipeline diagram">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <style>
+      .card { fill: #0f172a; stroke:#1f2a44; stroke-width:1.5; rx:18; ry:18; }
+      .txt { font: 600 16px Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill:#e6edf7 }
+      .sub { font: 12px Inter, system-ui; fill:#94a3b8 }
+      .num { font: 700 14px Inter; fill: #fff }
+    </style>
+  </defs>
+  <rect x="45" y="155" width="890" height="10" fill="url(#g1)" opacity="0.55"/>
+  <g transform="translate(60,60)"><rect class="card" width="160" height="180" /><circle cx="20" cy="24" r="12" fill="url(#g1)"/><text x="20" y="28" text-anchor="middle" class="num">1</text><text x="80" y="66" text-anchor="middle" class="txt">Evidence</text><text x="80" y="92" text-anchor="middle" class="sub">hash → SHA-256</text></g>
+  <g transform="translate(240,60)"><rect class="card" width="160" height="180" /><circle cx="20" cy="24" r="12" fill="url(#g1)"/><text x="20" y="28" text-anchor="middle" class="num">2</text><text x="80" y="66" text-anchor="middle" class="txt">Proof</text><text x="80" y="92" text-anchor="middle" class="sub">Merkle → mock ZK</text></g>
+  <g transform="translate(420,60)"><rect class="card" width="160" height="180" /><circle cx="20" cy="24" r="12" fill="url(#g1)"/><text x="20" y="28" text-anchor="middle" class="num">3</text><text x="80" y="66" text-anchor="middle" class="txt">Deliberation</text><text x="80" y="92" text-anchor="middle" class="sub">2/3 signatures</text></g>
+  <g transform="translate(600,60)"><rect class="card" width="160" height="180" /><circle cx="20" cy="24" r="12" fill="url(#g1)"/><text x="20" y="28" text-anchor="middle" class="num">4</text><text x="80" y="66" text-anchor="middle" class="txt">Anchor</text><text x="80" y="92" text-anchor="middle" class="sub">on-chain hash</text></g>
+  <g transform="translate(780,60)"><rect class="card" width="160" height="180" /><circle cx="20" cy="24" r="12" fill="url(#g1)"/><text x="20" y="28" text-anchor="middle" class="num">5</text><text x="80" y="66" text-anchor="middle" class="txt">Execute</text><text x="80" y="92" text-anchor="middle" class="sub">escrow release</text></g>
+</svg>
   </div>
 </section>
 
@@ -143,10 +158,27 @@
   </form>
 </dialog>
 
-<!-- libs & app -->
+<!-- libs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-MYJkZtBsraE0S8q7o2pTg8Z6HjC2rq8v1fxyJtqH9qL8p3a7wWcQm6yFVQmQ+7C2o+q6gq3cv0cG8b9Yb0iX0A==" crossorigin="anonymous"></script>
-<!-- defer to ensure all DOM is ready before boot() -->
-<script defer src="./app.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<!-- Fallback boot: if app.js didn't run, restore presets & basic handlers -->
+<script>
+(function(){
+  function fallbackBoot(){
+    var sel = document.getElementById('case-select');
+    if(!sel) return;
+    if(sel.options.length > 0) return; // app.js already filled it
+    var PRESETS = {construction:'Construction delay (Owner vs Contractor)', saas:'SaaS outage SLA (Customer vs Provider)', ipRoyalty:'Cross-border IP licensing (Royalty underreporting)', supplyDefect:'Supply-chain quality defect (OEM vs Supplier)', milestone:'Freelance milestone non-payment'};
+    sel.innerHTML = '';
+    Object.entries(PRESETS).forEach(function(kv){ var o=document.createElement('option'); o.value=kv[0]; o.text = kv[1]; sel.appendChild(o); });
+    sel.value = 'construction';
+  }
+  window.addEventListener('load', fallbackBoot);
+})();
+</script>
+
+<!-- external app (unchanged) -->
+<script defer src="./app.js"></script>
 </body>
 </html>
