@@ -1,53 +1,78 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Case #001 — Supply Contract</title>
+  <title>Case #001 — Supply Contract Dispute</title>
+
+  <!-- Pipeline base theme (colors, layout tokens) -->
+  <link rel="stylesheet" href="../../style.css">
+
+  <!-- Role-scope scoped add-ons (uses pipeline CSS variables) -->
   <link rel="stylesheet" href="../assets/css/site.css">
+
+  <!-- Consistent icons/meta -->
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:image" content="../../assets/logo.svg">
 </head>
 <body>
-  <header class="header">
-    <a href="../index.html">← Back</a>
-    <span>Current role: <strong id="currentRole"></strong></span>
+  <!-- Header aligned with pipeline style -->
+  <header class="site-header">
+    <div class="logo-title">
+      <img src="../../assets/logo.svg" alt="Logo" class="logo" />
+      <h1>Case #001</h1>
+    </div>
+    <nav class="site-nav">
+      <a href="../index.html" class="chip">← Back to Role-Scoped Demo</a>
+      <span class="chip">Current role: <strong id="currentRole">public</strong></span>
+    </nav>
   </header>
 
+  <!-- rs scope = role-scope visuals; container = pipeline layout width -->
   <main class="container rs">
-    <h1>Case #001 — Supply Contract Dispute</h1>
+    <h2 class="hero">Case #001 — Supply Contract Dispute</h2>
 
     <section class="card">
-      <div class="card-head">Award (Public)</div>
-      <div class="card-body">Claim partially upheld; Respondent must pay arrears.</div>
+      <h3>Award (Public)</h3>
+      <p>Claim <strong>partially upheld</strong>; Respondent must pay arrears.</p>
     </section>
 
     <section class="card">
-      <div class="card-head">Reasons</div>
+      <h3>Reasons</h3>
 
+      <!-- Arbitrator: full -->
       <div data-role="arbitrator">
-        <p><strong>[Arbitrators only — Full text]</strong></p>
-        <p>Based on exhibits E-12 and E-19 and testimonies W-02, W-05…</p>
+        <p><strong>[Arbitrators only — Full reasons]</strong></p>
+        <p>Based on exhibits E-12 and E-19 and testimonies W-02/W-05, together with Article 7.2,
+           the interruption cannot be attributed to the claimant. The “material adverse shift”
+           clause requires ≥2/3 indices to exceed thresholds for two consecutive quarters; this
+           was not proven by the respondent. Partial award is therefore granted.</p>
       </div>
 
+      <!-- Party: key grounds -->
       <div data-role="party">
         <p><strong>[Parties — Key grounds summary]</strong></p>
         <ul>
-          <li>“Material adverse shift” clause not satisfied.</li>
-          <li>Exhibits and testimonies accepted as credible.</li>
-          <li>Partial payment obligation confirmed.</li>
+          <li>“Material adverse shift” not satisfied (no proof).</li>
+          <li>Exhibits E-12/E-19 and testimonies W-02/W-05 accepted as credible.</li>
+          <li>Payment obligation confirmed but reduced.</li>
         </ul>
+        <p class="muted">Full reasons are available to parties in the official portal.</p>
       </div>
 
+      <!-- Public: brief summary -->
       <div data-role="public">
         <p><strong>[Public summary]</strong></p>
-        <p>Only a high-level summary is disclosed to the public.</p>
+        <p>Only a high-level summary is disclosed to the public. Full reasons are restricted.</p>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
+  <footer class="site-footer">
     <p>© 2025 PEAP Demo</p>
   </footer>
 
+  <!-- Role logic (reads localStorage.role and toggles [data-role]) -->
   <script src="../assets/js/access.js"></script>
 </body>
 </html>
