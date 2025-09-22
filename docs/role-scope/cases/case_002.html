@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Case #002 — Technology License Dispute</title>
+
+  <!-- Pipeline base theme (colors, layout tokens) -->
+  <link rel="stylesheet" href="../../style.css">
+
+  <!-- Role-scope scoped add-ons (uses pipeline CSS variables) -->
+  <link rel="stylesheet" href="../assets/css/site.css">
+
+  <!-- Consistent icons/meta -->
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <meta property="og:image" content="../../assets/logo.svg">
+</head>
+<body>
+  <!-- Header aligned with pipeline style -->
+  <header class="site-header">
+    <div class="logo-title">
+      <img src="../../assets/logo.svg" alt="Logo" class="logo" />
+      <h1>Case #002</h1>
+    </div>
+    <nav class="site-nav">
+      <a href="../index.html" class="chip">← Back to Role-Scoped Demo</a>
+      <span class="chip">Current role: <strong id="currentRole">public</strong></span>
+    </nav>
+  </header>
+
+  <!-- rs scope = role-scope visuals; container = pipeline layout width -->
+  <main class="container rs">
+    <h2 class="hero">Case #002 — Technology License Dispute</h2>
+
+    <section class="card">
+      <h3>Award (Public)</h3>
+      <p>Claim <strong>dismissed</strong>; counterclaim <strong>partially upheld</strong>.</p>
+    </section>
+
+    <section class="card">
+      <h3>Reasons</h3>
+
+      <!-- Arbitrator: full text -->
+      <div data-role="arbitrator">
+        <p><strong>[Arbitrators only — Full reasons]</strong></p>
+        <p>
+          After reviewing the license scope, disclosure history, and milestone performance,
+          the tribunal finds (i) the claimant failed to establish a <em>material breach</em> of
+          the Technology License Agreement; (ii) portions of the respondent’s counterclaim are
+          supported by evidence of missed deliverables and underperformance against milestones
+          M2–M3; (iii) royalty reporting discrepancies were cured within the contractual cure
+          window and therefore do not constitute independent grounds for termination.
+          Accordingly, the main claim is dismissed while the counterclaim is partially upheld
+          with quantified adjustments specified in the award.
+        </p>
+      </div>
+
+      <!-- Party: key grounds summary -->
+      <div data-role="party">
+        <p><strong>[Parties — Key grounds summary]</strong></p>
+        <ul>
+          <li>No material breach by respondent proven under Sections 4.1–4.3 of the TLA.</li>
+          <li>Counterclaim partially validated based on missed M2–M3 milestones.</li>
+          <li>Reporting issues cured within the contractual window; no termination ground.</li>
+          <li>Monetary adjustment and timeline remedies applied per award annex.</li>
+        </ul>
+        <p class="muted">Full reasons and annexes are available to parties in the official portal.</p>
+      </div>
+
+      <!-- Public: brief summary -->
+      <div data-role="public">
+        <p><strong>[Public summary]</strong></p>
+        <p>
+          The tribunal dismissed the main claim for lack of proof of material breach.
+          Parts of the counterclaim were upheld based on milestone underperformance.
+          Full reasoning is restricted to parties and arbitrators.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2025 PEAP Demo</p>
+  </footer>
+
+  <!-- Role logic (reads localStorage.role and toggles [data-role]) -->
+  <script src="../assets/js/access.js"></script>
+</body>
+</html>
