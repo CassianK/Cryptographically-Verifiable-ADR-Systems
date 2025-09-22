@@ -1,21 +1,36 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>PEAP Role-Scoped Access Demo</title>
-  <link rel="stylesheet" href="assets/css/site.css">
+  <meta charset="UTF-8" />
+  <title>PEAP – Role-Scoped Access Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Reuse pipeline base styles + small role-scope additions -->
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="assets/css/site.css" />
+  <script src="assets/js/access.js" defer></script>
 </head>
 <body>
-  <div class="bg-decor"></div>
-
-  <header class="header">
-    <div class="brand">
-      <strong>PEAP Demo</strong>
-      <span class="muted">Role-Scoped Reasons</span>
+  <header class="site-header">
+    <div class="logo-title">
+      <img src="../assets/logo.svg" alt="Logo" class="logo" />
+      <h1>PEAP Role-Scoped Access</h1>
     </div>
-    <div class="actions">
-      <label class="role">
+    <nav class="site-nav">
+      <a href="../index.html">Pipeline Demo</a> ·
+      <a href="./index.html" aria-current="page">Role-Scoped Access Demo</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <h2>Reason access, scoped by <em>role</em></h2>
+      <p class="sub">
+        Switch role and open a case. Arbitrators see <strong>full reasons</strong>,
+        Parties see <strong>key grounds</strong> for their case, and the Public sees a
+        <strong>short summary</strong>.
+      </p>
+
+      <label class="role-picker">
         <span>Role:</span>
         <select id="roleSelect" aria-label="Select role">
           <option value="public">Public</option>
@@ -23,50 +38,47 @@
           <option value="arbitrator">Arbitrator</option>
         </select>
       </label>
-      <button id="modeToggle" class="mode">🌓</button>
-    </div>
-  </header>
+    </section>
 
-  <section class="hero">
-    <div class="hero-inner">
-      <h1>Reason Access <span class="accent">Scoped by Role</span></h1>
-      <p class="sub">
-        Switch roles to see how arbitrators, parties, and the public
-        receive different levels of award reasons.
-      </p>
-    </div>
-  </section>
+    <section class="cards">
+      <article class="card">
+        <header class="card-h">
+          <h3>#001 Supply Contract Dispute</h3>
+          <small>Award: claim partially upheld</small>
+        </header>
+        <p class="pills">
+          <span class="pill ok">Result: Public</span>
+          <span class="pill arb">Reasons: Arbitrator</span>
+          <span class="pill info">Summary: Party/Public</span>
+        </p>
+        <p><a class="btn" href="cases/case_001.html">Open Case →</a></p>
+      </article>
 
-  <main class="container">
-    <section>
-      <h2>Case List</h2>
-      <div class="grid">
-        <a class="card" href="cases/case_001.html">
-          <div class="card-head">#001 Supply Contract Dispute</div>
-          <div class="card-body">Award: Claim partially upheld</div>
-          <div class="pill-row">
-            <span class="pill green">Result: Public</span>
-            <span class="pill violet">Reasons: Arbitrator</span>
-            <span class="pill blue">Summary: Party/Public</span>
-          </div>
-        </a>
-        <a class="card" href="cases/case_002.html">
-          <div class="card-head">#002 Technology License Dispute</div>
-          <div class="card-body">Award: Claim dismissed</div>
-          <div class="pill-row">
-            <span class="pill green">Result: Public</span>
-            <span class="pill violet">Reasons: Arbitrator</span>
-            <span class="pill blue">Summary: Party</span>
-          </div>
-        </a>
-      </div>
+      <article class="card">
+        <header class="card-h">
+          <h3>#002 Technology License Dispute</h3>
+          <small>Award: claim dismissed; counterclaim partially upheld</small>
+        </header>
+        <p class="pills">
+          <span class="pill ok">Result: Public</span>
+          <span class="pill arb">Reasons: Arbitrator</span>
+          <span class="pill info">Summary: Party</span>
+        </p>
+        <p><a class="btn" href="cases/case_002.html">Open Case →</a></p>
+      </article>
+    </section>
+
+    <section class="note">
+      <h4>About this demo</h4>
+      <ul>
+        <li>No authentication or crypto here—view switching is simulated via <code>localStorage.role</code>.</li>
+        <li>Use this together with the Pipeline Demo for end-to-end narrative in the paper.</li>
+      </ul>
     </section>
   </main>
 
-  <footer class="footer">
+  <footer class="site-footer">
     <p>© 2025 Dokyung (DK) Kim — PEAP Demo</p>
   </footer>
-
-  <script src="assets/js/access.js"></script>
 </body>
 </html>
