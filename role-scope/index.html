@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>PEAP Role-Scoped Access Demo</title>
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+  <div class="bg-decor"></div>
+
+  <header class="header">
+    <div class="brand">
+      <strong>PEAP Demo</strong>
+      <span class="muted">Role-Scoped Reasons</span>
+    </div>
+    <div class="actions">
+      <label class="role">
+        <span>Role:</span>
+        <select id="roleSelect" aria-label="Select role">
+          <option value="public">Public</option>
+          <option value="party">Party</option>
+          <option value="arbitrator">Arbitrator</option>
+        </select>
+      </label>
+      <button id="modeToggle" class="mode">🌓</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>Reason Access <span class="accent">Scoped by Role</span></h1>
+      <p class="sub">
+        Switch roles to see how arbitrators, parties, and the public
+        receive different levels of award reasons.
+      </p>
+    </div>
+  </section>
+
+  <main class="container">
+    <section>
+      <h2>Case List</h2>
+      <div class="grid">
+        <a class="card" href="cases/case_001.html">
+          <div class="card-head">#001 Supply Contract Dispute</div>
+          <div class="card-body">Award: Claim partially upheld</div>
+          <div class="pill-row">
+            <span class="pill green">Result: Public</span>
+            <span class="pill violet">Reasons: Arbitrator</span>
+            <span class="pill blue">Summary: Party/Public</span>
+          </div>
+        </a>
+        <a class="card" href="cases/case_002.html">
+          <div class="card-head">#002 Technology License Dispute</div>
+          <div class="card-body">Award: Claim dismissed</div>
+          <div class="pill-row">
+            <span class="pill green">Result: Public</span>
+            <span class="pill violet">Reasons: Arbitrator</span>
+            <span class="pill blue">Summary: Party</span>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Dokyung (DK) Kim — PEAP Demo</p>
+  </footer>
+
+  <script src="assets/js/access.js"></script>
+</body>
+</html>
