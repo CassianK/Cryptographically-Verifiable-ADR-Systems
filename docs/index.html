@@ -10,10 +10,6 @@
   <meta property="og:title" content="Verifiable ADR — MVP Demo" />
   <meta property="og:description" content="Try the interactive flow: Evidence → Proof → Deliberation → Anchoring" />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="../assets/logo.svg" />
-
-  <!-- Favicon (로고로 대체: 별도 favicon.svg 없어도 404 안남) -->
-  <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,8 +21,6 @@
 <body>
 <header class="hdr">
   <div class="brand">
-    <!-- PATH FIX: docs/ 기준으로 한 단계 위의 assets -->
-    <img src="../assets/logo.svg" alt="Trinos ADR" class="logo" />
     <div class="brand-text">
       <div class="ttl">Verifiable ADR — MVP</div>
       <div class="sub">Arbitration Escrow • static, client-side only</div>
@@ -53,7 +47,7 @@
     <button class="cta" onclick="document.getElementById('main').scrollIntoView({behavior:'smooth'})">Try the demo ↓</button>
   </div>
 
-  <!-- Architecture: 외부 파일 참조 대신 인라인 SVG로 고정 렌더 -->
+  <!-- Architecture: 인라인 SVG -->
   <div class="cover" aria-label="ADR pipeline diagram">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 320"
          style="width:100%; max-width:980px; height:auto; display:block; margin:0 auto;"
