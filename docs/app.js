@@ -150,4 +150,4 @@ btnAnchor.onclick = ()=>{ if(!state.decisionHash){ push("(!) Generate proof firs
 btnExec.onclick = ()=>{ push("Executing award (escrow release)…"); state.execTx=rnd(32); txEEl.textContent=state.execTx; push(\`Escrow released (tx: \${state.execTx})\`);
   setBadge("Executed ✓", true); logPresetHints("exec"); btnExec.disabled=true; };
 btnPdf && (btnPdf.onclick = generateAwardPDF);
-function boot(){ reset(); bootstrapPresets(); } window.addEventListener("load", boot);
+function boot(){ reset(); bootstrapPresets(); } if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded", boot); }else{ boot(); }
