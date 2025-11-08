@@ -1,0 +1,30 @@
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: #0b0c10;
+    color: #c5c6c7;
+    margin: 0;
+    padding: 0;
+}
+header {
+    text-align: center;
+    padding: 2rem;
+    background: #1f2833;
+}
+h1 {
+    color: #66fcf1;
+}
+h2 {
+    color: #45a29e;
+}
+main {
+    max-width: 900px;
+    margin: 2rem auto;
+    line-height: 1.6;
+}
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: #1f2833;
+    color: #c5c6c7;
+    font-size: 0.9rem;
+}
