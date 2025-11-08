@@ -1,4 +1,5 @@
 /* app.js — full MVP logic with robust boot timing */
+(function() {
 const $ = (id) => document.getElementById(id);
 const logEl = $("log"), caseIdEl = $("case-id"), merkleEl = $("merkle");
 const dhEl = $("dh"), txAEl = $("tx-anchor"), txEEl = $("tx-exec");
@@ -150,4 +151,5 @@ btnAnchor.onclick = ()=>{ if(!state.decisionHash){ push("(!) Generate proof firs
 btnExec.onclick = ()=>{ push("Executing award (escrow release)…"); state.execTx=rnd(32); txEEl.textContent=state.execTx; push(\`Escrow released (tx: \${state.execTx})\`);
   setBadge("Executed ✓", true); logPresetHints("exec"); btnExec.disabled=true; };
 btnPdf && (btnPdf.onclick = generateAwardPDF);
-function boot(){ reset(); bootstrapPresets(); } if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded", boot); }else{ boot(); }
+function boot(){ reset(); bootstrapPresets(); }
+if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded", boot); }else{ boot(); };tListener("DOMContentLoaded", boot); }else{ boot(); }
